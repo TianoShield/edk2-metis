@@ -1,0 +1,40 @@
+## @file MockgEfiSimpleNetworkProtocolGuid.inf
+#  Mock Simple Network Protocol implementation for HBFAplus fuzzing.
+#
+#  EDK2 Producer: NetworkPkg/SnpDxe
+#
+#  Self-contained mock — does NOT wrap the real SnpDxe driver.
+#  Implements EFI_SIMPLE_NETWORK_PROTOCOL with a genuine state machine
+#  (Stopped <-> Started <-> Initialized) and fuzz-byte-driven Receive.
+#
+#  Copyright (c) 2025-2026, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = MockgEfiSimpleNetworkProtocolGuid
+  FILE_GUID      = A2f436EA-A127-4EF8-957C-8048606FF670
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = MockgEfiSimpleNetworkProtocolGuid
+  CONSTRUCTOR    = MockgEfiSimpleNetworkProtocolGuidConstructor
+
+[Sources]
+  MockgEfiSimpleNetworkProtocolGuid.c
+  MockgEfiSimpleNetworkProtocolGuid.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  FuzzContextLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiSimpleNetworkProtocolGuid    ## SOMETIMES_PRODUCES

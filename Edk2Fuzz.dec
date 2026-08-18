@@ -1,0 +1,37 @@
+## @file Edk2Fuzz.dec
+#  Edk2Fuzz Package Declaration File.
+#
+#  Single-harness (NetworkPkg/Dhcp6Dxe) host-based fuzzing package.
+#
+#  Copyright (c) 2026, Edk2Fuzz Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = Edk2FuzzPkg
+  PACKAGE_GUID                   = AF9F935F-0A97-427B-8F26-B5A2893CEC23
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+  MockProtocols/NetworkPkg/SnpDxe/MockgEfiSimpleNetworkProtocolGuid
+  MockProtocols/NetworkPkg/Ip6Dxe/MockgEfiIp6ConfigProtocolGuid
+  MockProtocols/NetworkPkg/Ip6Dxe/MockgEfiIp6ProtocolGuid
+  MockProtocols/NetworkPkg/Ip6Dxe/MockgEfiIp6ServiceBindingProtocolGuid
+  MockProtocols/NetworkPkg/Udp6Dxe/MockgEfiUdp6ProtocolGuid
+  MockProtocols/NetworkPkg/Udp6Dxe/MockgEfiUdp6ServiceBindingProtocolGuid
+  MockProtocols/NetworkPkg/DpcDxe/MockgEfiDpcProtocolGuid
+  MockProtocols/SecurityPkg/RandomNumberGenerator/RngDxe/MockgEfiRngProtocolGuid
+
+[LibraryClasses]
+  FuzzContextLib|Include/Library/FuzzContextLib.h
+  MockgEfiSimpleNetworkProtocolGuid|MockProtocols/NetworkPkg/SnpDxe/MockgEfiSimpleNetworkProtocolGuid/MockgEfiSimpleNetworkProtocolGuid.h
+  MockgEfiIp6ConfigProtocolGuid|MockProtocols/NetworkPkg/Ip6Dxe/MockgEfiIp6ConfigProtocolGuid/MockgEfiIp6ConfigProtocolGuid.h
+  MockgEfiIp6ProtocolGuid|MockProtocols/NetworkPkg/Ip6Dxe/MockgEfiIp6ProtocolGuid/MockgEfiIp6ProtocolGuid.h
+  MockgEfiIp6ServiceBindingProtocolGuid|MockProtocols/NetworkPkg/Ip6Dxe/MockgEfiIp6ServiceBindingProtocolGuid/MockgEfiIp6ServiceBindingProtocolGuid.h
+  MockgEfiUdp6ProtocolGuid|MockProtocols/NetworkPkg/Udp6Dxe/MockgEfiUdp6ProtocolGuid/MockgEfiUdp6ProtocolGuid.h
+  MockgEfiUdp6ServiceBindingProtocolGuid|MockProtocols/NetworkPkg/Udp6Dxe/MockgEfiUdp6ServiceBindingProtocolGuid/MockgEfiUdp6ServiceBindingProtocolGuid.h
+  MockgEfiDpcProtocolGuid|MockProtocols/NetworkPkg/DpcDxe/MockgEfiDpcProtocolGuid/MockgEfiDpcProtocolGuid.h
+  MockgEfiRngProtocolGuid|MockProtocols/SecurityPkg/RandomNumberGenerator/RngDxe/MockgEfiRngProtocolGuid/MockgEfiRngProtocolGuid.h

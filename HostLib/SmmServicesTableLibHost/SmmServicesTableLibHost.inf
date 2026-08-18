@@ -1,0 +1,67 @@
+## @file
+# SMM Services Table Library — Host-based implementation for fuzzing.
+#
+# Provides gSmst (EFI_SMM_SYSTEM_TABLE2*) and gMmst (EFI_MM_SYSTEM_TABLE*)
+# with a complete protocol database, configuration table management,
+# malloc-backed memory services, and full SMI dispatch. CPU I/O is stubbed.
+#
+# LIBRARY_CLASS: SmmServicesTableLib — for SMM drivers using gSmst
+# LIBRARY_CLASS: MmServicesTableLib  — for MM drivers using gMmst
+#
+# ## AUDIT ##
+# Upstream: edk2/MdePkg/Library/SmmServicesTableLib
+# 6 source files: SmmServicesTableLibHost.c (globals + services),
+#   PiSmmCore.c (SMST init), Handle.c (protocol DB), Locate.c (locate),
+#   Notify.c (notifications), InstallConfigurationTable.c (config tables).
+# Fixes applied:
+#   - Added InSmm() returning TRUE (was missing, link error)
+#   - Added SmmStartupThisAp stub returning EFI_UNSUPPORTED (was NULL, crash)
+#   - Changed SMI stubs from EFI_NOT_AVAILABLE_YET to EFI_UNSUPPORTED
+#   - Added NULL check to SmmAllocatePool and SmmFreePool
+#   - Fixed SmmAllocatePages to return EFI_INVALID_PARAMETER (was EFI_NOT_FOUND)
+#
+# Copyright (c) 2009 - 2014, Intel Corporation. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmServicesTableLibHost
+  FILE_GUID                      = BC01EA4A-7CD7-456F-9BD3-1EF71FD0E026
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SmmServicesTableLib
+  LIBRARY_CLASS                  = MmServicesTableLib
+  CONSTRUCTOR                    = SmmServicesTableLibConstructor
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64 EBC
+#
+
+[Sources]
+  SmmServicesTableLibHost.c
+  PiSmmCore.c
+  Handle.c
+  Locate.c
+  Notify.c
+  InstallConfigurationTable.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiSmmBase2ProtocolGuid  ## CONSUMES
+
+

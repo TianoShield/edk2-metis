@@ -1,0 +1,22 @@
+## @file UefiBootManagerLibNull.inf
+#  Null instance of UefiBootManagerLib — all functions are stubs.
+#  Copyright (c) 2026, TianoShield Contributors. SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = UefiBootManagerLibNull
+  FILE_GUID      = C1D2E3F4-A5B6-7890-CDEF-1234567890AB
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = UefiBootManagerLib
+
+[Sources]
+  UefiBootManagerLibNull.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  BaseLib

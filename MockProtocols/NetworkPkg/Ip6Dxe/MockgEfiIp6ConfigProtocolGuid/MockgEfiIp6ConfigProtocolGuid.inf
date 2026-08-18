@@ -1,0 +1,40 @@
+## @file MockgEfiIp6ConfigProtocolGuid.inf
+#  HBFAplus Mock IPv6 Configuration Protocol Library
+#
+#  Mock EFI_IP6_CONFIG_PROTOCOL for fuzzing network drivers.
+#  Returns fuzzer-controlled IPv6 configuration data.
+#
+#  EDK2 Producer: NetworkPkg/Ip6Dxe
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010017
+  BASE_NAME      = MockgEfiIp6ConfigProtocolGuid
+  FILE_GUID      = A3E7F812-9B1C-4D5E-8A6F-7C3B2E1D0F9A
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = MockgEfiIp6ConfigProtocolGuid
+  CONSTRUCTOR    = MockgEfiIp6ConfigProtocolGuidConstructor
+
+[Sources]
+  MockgEfiIp6ConfigProtocolGuid.c
+  MockgEfiIp6ConfigProtocolGuid.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  NetworkPkg/NetworkPkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  FuzzContextLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiIp6ConfigProtocolGuid    ## SOMETIMES_PRODUCES

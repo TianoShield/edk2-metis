@@ -1,0 +1,42 @@
+## @file MockgEfiDpcProtocolGuid.inf
+#  Mock implementation of EFI_DPC_PROTOCOL for host-based fuzzing.
+#
+#  Installs a minimal EFI_DPC_PROTOCOL on gFuzzHandle that uses
+#  breadth-first queued dispatch.  QueueDpc appends to a ring buffer
+#  and drains if not already inside a dispatch loop; re-entrant calls
+#  just append — the outer loop picks them up.  Required by DxeDpcLib
+#  (QueueDpc/DispatchDpc) which is used by DxeUdpIoLib, DxeIpIoLib,
+#  and most NetworkPkg drivers.
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = MockgEfiDpcProtocolGuid
+  FILE_GUID      = A1B2C3D4-E5F6-0718-2930-415263748596
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = MockgEfiDpcProtocolGuid
+  CONSTRUCTOR    = MockgEfiDpcProtocolGuidConstructor
+
+[Sources]
+  MockgEfiDpcProtocolGuid.c
+  MockgEfiDpcProtocolGuid.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  NetworkPkg/NetworkPkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  FuzzContextLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiDpcProtocolGuid

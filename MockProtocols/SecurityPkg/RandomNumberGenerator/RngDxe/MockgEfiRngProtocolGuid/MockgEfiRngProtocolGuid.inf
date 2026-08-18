@@ -1,0 +1,38 @@
+## @file MockgEfiRngProtocolGuid.inf
+#  HBFAplus Mock Random Number Generator Protocol Library
+#
+#  Mock EFI_RNG_PROTOCOL for fuzzing drivers that consume random data.
+#  Returns deterministic, fuzzer-controlled values for reproducibility.
+#
+#  EDK2 Producer: SecurityPkg/RandomNumberGenerator/RngDxe
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010017
+  BASE_NAME      = MockgEfiRngProtocolGuid
+  FILE_GUID      = B4D92C15-6E8A-4F3B-9D7C-1A5E0F2B8C4D
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = MockgEfiRngProtocolGuid
+  CONSTRUCTOR    = MockgEfiRngProtocolGuidConstructor
+
+[Sources]
+  MockgEfiRngProtocolGuid.c
+  MockgEfiRngProtocolGuid.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  FuzzContextLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiRngProtocolGuid    ## SOMETIMES_PRODUCES

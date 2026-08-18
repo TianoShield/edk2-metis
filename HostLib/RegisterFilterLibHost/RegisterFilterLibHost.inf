@@ -1,0 +1,38 @@
+## @file
+#  Host-based RegisterFilterLib implementation.
+#
+#  Intercepts MMIO, Port I/O, and MSR reads, returning values from the shared
+#  FuzzContextLib byte pool.  Writes are ignored (no-op).  Overrides edk2's
+#  RegisterFilterLibNull globally in the HBFAplus DSC.
+#
+#  Copyright (c) 2026, Intel Corporation. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = RegisterFilterLibHost
+  FILE_GUID                      = 7A8E3B1C-5D4F-4E2A-9B6C-8D7E0F1A2B3C
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = RegisterFilterLib
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  RegisterFilterLibHost.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  FuzzContextLib

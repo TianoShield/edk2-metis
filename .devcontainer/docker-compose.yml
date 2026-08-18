@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  edk2fuzz-dev:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        - HOST_UID=${HOST_UID:-1000}
+        - HOST_GID=${HOST_GID:-1000}
+    image: edk2fuzz:ubuntu22.04
+
+    stdin_open: true
+    tty: true
+
+    # Mount the repo at /home/builder/edk2fuzz_workspace/Edk2Fuzz so that
+    # PACKAGES_PATH=/home/builder/edk2fuzz_workspace can resolve
+    # Edk2Fuzz/Edk2Fuzz.dec (matches OSS-Fuzz $SRC/edk2fuzz layout).
+    volumes:
+      - ..:/home/builder/edk2fuzz_workspace/Edk2Fuzz:cached
+
+    tmpfs:
+      - /tmp:exec,size=16G
+
+    environment:
+      - HOST_UID=${HOST_UID:-1000}
+      - HOST_GID=${HOST_GID:-1000}
+
+    entrypoint: /usr/local/bin/entrypoint.sh
+    command: sleep infinity
+
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    network_mode: host
+    shm_size: '2gb'

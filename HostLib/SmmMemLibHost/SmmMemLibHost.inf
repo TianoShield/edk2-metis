@@ -1,0 +1,56 @@
+## @file
+#  Instance of SMM memory check library.
+#
+#  Copyright (c) 2018, Intel Corporation. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#  ==========================================================================
+#  HBFAplus HOST-BASED REHOSTING AUDIT
+#  ==========================================================================
+#
+#  Provides: SmmMemLib, SmmMemLibStubLib  (LIBRARY_CLASS)
+#  Used by:  Any SMM handler module that validates comm buffers.
+#
+#  Implements the 5 public SmmMemLib APIs with a simplified host model:
+#    SmmIsBufferOutsideSmmValid, SmmCopyMemToSmram, SmmCopyMemFromSmram,
+#    SmmCopyMem, SmmSetMem.
+#  Plus host-only SmmMemLibInitialize to register valid comm regions.
+#
+#  Differences from edk2 MdePkg/Library/SmmMemLib:
+#    - MODULE_TYPE BASE (not DXE_SMM_DRIVER)
+#    - No SMM_ACCESS2_PROTOCOL, no SMRAM ranges, no GCD queries
+#    - No constructor/destructor; uses explicit SmmMemLibInitialize
+#      NOTE: A constructor (SmmMemLibHostConstructor) auto-registers the full
+#      address space as a valid comm buffer so harnesses work out of the box.
+#      Callers can still override via SmmMemLibInitialize().
+#    - Only requires BaseMemoryLib + DebugLib (no SmmServicesTableLib etc.)
+#  ==========================================================================
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmmMemLibHost
+  FILE_GUID                      = 7F23F839-C81C-4B89-8132-69746FCBCE52
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SmmMemLib
+  LIBRARY_CLASS                  = SmmMemLibStubLib
+  CONSTRUCTOR                    = SmmMemLibHostConstructor
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+[Sources]
+  SmmMemLibHost.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+

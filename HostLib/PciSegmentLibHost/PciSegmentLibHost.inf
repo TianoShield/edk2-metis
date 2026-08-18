@@ -1,0 +1,25 @@
+## @file PciSegmentLibHost.inf
+#  Host-compatible PciSegmentLib backed by a virtual 4KB config space buffer.
+#
+#  Copyright (c) 2026, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PciSegmentLibHost
+  FILE_GUID                      = 2D3E4F5A-6B7C-8D9E-0FA1-B2C3D4E5F6A7
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciSegmentLib
+
+[Sources]
+  PciSegmentLibHost.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib

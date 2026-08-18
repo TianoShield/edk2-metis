@@ -1,0 +1,39 @@
+## @file MockgEfiUdp6ProtocolGuid.inf
+#  Mock UDP6 Protocol implementation for HBFAplus fuzzing.
+#
+#  Provides a mock EFI_UDP6_PROTOCOL that delivers fuzz-controlled
+#  payload through Receive completion tokens.
+#
+#  EDK2 Producer: NetworkPkg/Udp6Dxe
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = MockgEfiUdp6ProtocolGuid
+  FILE_GUID      = D7E8C911-5B3A-4D2F-9E1A-6F7C8D3E2B01
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = MockgEfiUdp6ProtocolGuid
+  CONSTRUCTOR    = MockgEfiUdp6ProtocolGuidConstructor
+
+[Sources]
+  MockgEfiUdp6ProtocolGuid.c
+  MockgEfiUdp6ProtocolGuid.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  FuzzContextLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiUdp6ProtocolGuid    ## SOMETIMES_PRODUCES

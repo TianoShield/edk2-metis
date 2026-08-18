@@ -1,0 +1,30 @@
+## @file
+#  FuzzContextLib - Single fuzz byte pool for HBFAplus.
+#
+#  Owns the process-lifetime MOCK_FUZZ_CONTEXT that every consumer shares.
+#  ToolChainHarnessLib loads it per iteration; mocks, RegisterFilterLib, and
+#  harness code all consume from the same pool.
+#
+#  Copyright (c) 2026, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = FuzzContextLib
+  FILE_GUID                      = A3E7C1D2-8B5F-4A6E-9D0C-1F2E3B4A5C6D
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = FuzzContextLib
+
+[Sources]
+  FuzzContextLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  UefiBootServicesTableLib

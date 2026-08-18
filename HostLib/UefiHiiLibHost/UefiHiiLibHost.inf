@@ -1,0 +1,51 @@
+## @file UefiHiiLibHost.inf
+#
+#  Host-side UefiHiiLib for HBFAplus fuzzing environment.
+#
+#  This library replaces the standard UefiHiiLib to fix the ms_abi / SysV
+#  VA_LIST mismatch that causes HiiAddPackages() to crash on Linux/GCC X64.
+#
+#  HiiLib.c is compiled through a wrapper (HiiLibHost.c) that applies VA
+#  override macros before including the original source.  HiiString.c and
+#  HiiLanguage.c have no variadic functions and are included directly.
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = UefiHiiLibHost
+  FILE_GUID                      = 4C5A2E8D-9F3B-4A71-B6D8-E1F73C80A5B2
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = HiiLib
+
+[Sources]
+  HiiLibHost.c
+  HiiLibVAOverride.h
+  HiiString.c
+  HiiLanguage.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  MemoryAllocationLib
+  BaseMemoryLib
+  BaseLib
+  DebugLib
+  UefiBootServicesTableLib
+  DevicePathLib
+  UefiLib
+  UefiHiiServicesLib
+  PrintLib
+
+[Protocols]
+  gEfiFormBrowser2ProtocolGuid ## SOMETIMES_CONSUMES
+  gEfiDevicePathProtocolGuid   ## SOMETIMES_CONSUMES
+
+[Guids]
+  gEdkiiIfrBitVarstoreGuid       ## SOMETIMES_CONSUMES ## GUID

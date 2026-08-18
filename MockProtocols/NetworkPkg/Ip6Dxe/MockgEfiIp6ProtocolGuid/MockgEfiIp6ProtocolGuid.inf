@@ -1,0 +1,39 @@
+## @file MockgEfiIp6ProtocolGuid.inf
+#  Mock IP6 Protocol implementation for HBFAplus fuzzing.
+#
+#  Provides a mock EFI_IP6_PROTOCOL that delivers fuzz-controlled
+#  IPv6 datagrams through Receive completion tokens.
+#
+#  EDK2 Producer: NetworkPkg/Ip6Dxe
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = MockgEfiIp6ProtocolGuid
+  FILE_GUID      = A1B2C3D4-2222-4A2B-9E1A-200000000001
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = MockgEfiIp6ProtocolGuid
+  CONSTRUCTOR    = MockgEfiIp6ProtocolGuidConstructor
+
+[Sources]
+  MockgEfiIp6ProtocolGuid.c
+  MockgEfiIp6ProtocolGuid.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  FuzzContextLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiIp6ProtocolGuid    ## SOMETIMES_PRODUCES

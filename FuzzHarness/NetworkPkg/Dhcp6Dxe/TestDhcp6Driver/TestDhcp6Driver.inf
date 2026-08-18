@@ -1,0 +1,65 @@
+## @file TestDhcp6Driver.inf
+#  Fuzz harness for Dhcp6Dxe using real DriverBinding/ServiceBinding flow.
+#
+#  This harness drives the complete Dhcp6 driver initialization path:
+#    Dhcp6DriverEntryPoint → DriverBinding.Start → ServiceBinding.CreateChild
+#  then exercises the resulting EFI_DHCP6_PROTOCOL APIs with fuzz input.
+#
+#  Build:
+#    build -p HBFAplus/HBFAplus.dsc \
+#          -m HBFAplus/FuzzHarness/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/TestDhcp6Driver.inf \
+#          -a X64 -t AFL
+#
+#  Run:
+#    afl-fuzz -i HBFAplus/Seed/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/Raw \
+#             -o /tmp/dhcp6_out -- \
+#             ./Build/HBFAplusPkg/DEBUG_AFL/X64/TestDhcp6Driver @@
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = TestDhcp6Driver
+  FILE_GUID                      = B1C2D3E4-F5A6-7B8C-9D0E-F12345678901
+  MODULE_TYPE                    = USER_DEFINED
+  VERSION_STRING                 = 1.0
+
+[Sources]
+  TestDhcp6Driver.c
+  DriverRegistry.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  NetworkPkg/NetworkPkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DebugLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  UefiLib
+  PrintLib
+  DevicePathLib
+  NetLib
+  UdpIoLib
+  DpcLib
+  HostDispatcherLib
+  ToolChainHarnessLib
+
+[Protocols]
+  gEfiDhcp6ProtocolGuid
+  gEfiDhcp6ServiceBindingProtocolGuid
+  gEfiUdp6ProtocolGuid
+  gEfiUdp6ServiceBindingProtocolGuid
+  gEfiSimpleNetworkProtocolGuid
+  gEfiIp6ConfigProtocolGuid
+  gEfiRngProtocolGuid
+
+[BuildOptions]
+  GCC:*_*_*_CC_FLAGS = -I$(WORKSPACE)/edk2/NetworkPkg/Dhcp6Dxe

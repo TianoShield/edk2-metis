@@ -1,0 +1,16 @@
+homepage: "https://github.com/TianoShield/edk2fuzz"
+language: c
+primary_contact: "ramanandabalaji@gmail.com"
+main_repo: "https://github.com/TianoShield/edk2fuzz"
+file_github_issue: true
+fuzzing_engines:
+  - afl
+sanitizers:
+  - address
+architectures:
+  - x86_64
+project_type: "library"
+labels:
+  - uefi
+  - edk2
+  - firmware

@@ -1,0 +1,41 @@
+## @file PrintLibHost.inf
+#
+#  Host-side PrintLib for HBFAplus fuzzing environment.
+#
+#  This library compiles edk2's BasePrintLib sources with NO_MSABI_VA_FUNCS
+#  temporarily removed, so that VA_LIST uses ms_abi intrinsics.  This fixes
+#  all EFIAPI variadic functions that would otherwise crash due to the
+#  ms_abi / SysV VA_LIST mismatch.
+#
+#  See PrintLibHostWrapper.c for the full explanation.
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PrintLibHost
+  FILE_GUID                      = B7F2E94D-7A2F-4B89-A15E-C83D02F1E7A0
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PrintLib
+
+[Sources]
+  PrintLibInternal.h
+  PrintLibInternal.c
+  PrintLib.c
+  PrintLibVAOverride.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  BaseLib
+  PcdLib
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdMaximumAsciiStringLength     ## SOMETIMES_CONSUMES
+  gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength   ## SOMETIMES_CONSUMES

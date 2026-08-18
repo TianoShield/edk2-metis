@@ -1,0 +1,28 @@
+## @file PcdLibHostDynamic.inf
+#  Host-compatible PCD Library that silently accepts PcdSet*S calls.
+#
+#  Based on BasePcdLibNull but PcdSet*S functions return RETURN_SUCCESS
+#  instead of asserting.  Required by drivers that call PcdSet64S during
+#  initialisation (e.g. EmuVariableFvbRuntimeDxe).
+#
+#  Copyright (c) 2006 - 2018, Intel Corporation. All rights reserved.<BR>
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = PcdLibHostDynamic
+  FILE_GUID      = A1B2C3D4-E5F6-7890-ABCD-EF0123456701
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = PcdLib
+
+[Sources]
+  PcdLibHostDynamic.c
+
+[LibraryClasses]
+  DebugLib
+  BaseMemoryLib
+
+[Packages]
+  MdePkg/MdePkg.dec

@@ -1,0 +1,8 @@
+Build/
+*.o
+*.obj
+*.lib
+*.pyc
+__pycache__/
+.claude
+.github

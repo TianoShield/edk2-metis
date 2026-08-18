@@ -1,0 +1,71 @@
+## @file ToolChainHarnessLib.inf
+#  HBFAplus Toolchain Harness Library - Main entry points for fuzzing.
+#
+#  This library provides main() entry point
+#  for fuzzing harnesses. It handles:
+#  - One-time initialization via InitializeHarness()
+#  - Per-iteration timer reset for deterministic behavior
+#  - Cleanup registration via atexit()
+#
+#  Harnesses using this library MUST implement:
+#  - InitializeHarness() - One-time setup
+#  - CleanupHarness()    - Resource cleanup
+#  - RunTestHarness()    - Per-iteration test
+#  - GetMaxBufferSize()  - Max fuzz input size
+#
+#  Based on HBFA's ToolChainHarnessLib with HBFAplus extensions.
+#
+#  Copyright (c) 2019, Intel Corporation. All rights reserved.
+#  Copyright (c) 2024, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = ToolChainHarnessLib
+  FILE_GUID                      = 153C6BC3-5AD4-491A-94C9-C4F5E3C91E40
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = ToolChainHarnessLib
+
+[Sources]
+  ToolChainHarnessLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  #
+  # HBFAplus package - includes FuzzContextLib headers
+  #
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  #
+  # BaseLib - Basic UEFI types and operations
+  #
+  BaseLib
+  #
+  # BaseMemoryLib - CopyMem, ZeroMem, etc.
+  #
+  BaseMemoryLib
+  #
+  # MemoryAllocationLib - AllocatePool, FreePool
+  #
+  MemoryAllocationLib
+  #
+  # DebugLib - DEBUG macro for logging
+  #
+  DebugLib
+  #
+  # FuzzContextLib - Single fuzz byte pool
+  #
+  FuzzContextLib
+  #
+  # UefiBootServicesTableLib - Provides MockEventResetState (merged into EventHost.c)
+  #
+  UefiBootServicesTableLib
+
+[BuildOptions]
+  #
+  # Enable all warnings
+  #
+  GCC:*_*_*_CC_FLAGS = -Wall -Werror

@@ -1,0 +1,40 @@
+## @file MockgEfiUdp6ServiceBindingProtocolGuid.inf
+#  Mock UDP6 Service Binding Protocol implementation for HBFAplus fuzzing.
+#
+#  Provides a mock EFI_SERVICE_BINDING_PROTOCOL under
+#  gEfiUdp6ServiceBindingProtocolGuid.  CreateChild returns gFuzzHandle
+#  (single-handle model) so callers can immediately OpenProtocol for
+#  gEfiUdp6ProtocolGuid on the returned child handle.
+#
+#  EDK2 Producer: NetworkPkg/Udp6Dxe
+#
+#  Copyright (c) 2025, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = MockgEfiUdp6ServiceBindingProtocolGuid
+  FILE_GUID      = 1A2B3C4D-5E6F-7890-ABCD-EF1234560001
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = MockgEfiUdp6ServiceBindingProtocolGuid
+  CONSTRUCTOR    = MockgEfiUdp6ServiceBindingProtocolGuidConstructor
+
+[Sources]
+  MockgEfiUdp6ServiceBindingProtocolGuid.c
+  MockgEfiUdp6ServiceBindingProtocolGuid.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Edk2Fuzz/Edk2Fuzz.dec
+
+[LibraryClasses]
+  FuzzContextLib
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gEfiUdp6ServiceBindingProtocolGuid    ## SOMETIMES_PRODUCES

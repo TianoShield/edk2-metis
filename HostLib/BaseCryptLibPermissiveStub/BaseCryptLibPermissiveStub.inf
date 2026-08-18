@@ -1,0 +1,34 @@
+## @file BaseCryptLibPermissiveStub.inf
+#
+#  Permissive BaseCryptLib stub for HBFA fuzz harnesses.  Implements only
+#  the BaseCryptLib symbols that authenticated-variable code paths call,
+#  returning success-shaped values instead of ASSERT(FALSE).
+#
+#  Use this in place of BaseCryptLibNull when fuzzing AuthVariableLib /
+#  CertDb / Pk/Kek/db parsing — without it the library aborts inside
+#  AuthVariableLibInitialize() and the fuzzer never reaches the parser.
+#
+#  Copyright (c) 2026 TianoShield Contributors.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = BaseCryptLibPermissiveStub
+  FILE_GUID      = 7E8C3A14-15B6-4D27-9C7B-2A4F36E18B59
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = BaseCryptLib
+
+[Sources]
+  BaseCryptLibPermissiveStub.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  CryptoPkg/CryptoPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  DebugLib

@@ -1,0 +1,27 @@
+## @file PciHostBridgeLibHost.inf
+#  Host-compatible PciHostBridgeLib returning a single PCI root bridge.
+#
+#  Copyright (c) 2026, HBFAplus Contributors. All rights reserved.
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PciHostBridgeLibHost
+  FILE_GUID                      = 1C2D3E4F-5A6B-7C8D-9E0F-A1B2C3D4E5F6
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciHostBridgeLib
+
+[Sources]
+  PciHostBridgeLibHost.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
