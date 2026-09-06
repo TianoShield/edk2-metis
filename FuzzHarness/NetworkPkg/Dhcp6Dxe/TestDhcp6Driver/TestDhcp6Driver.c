@@ -161,6 +161,17 @@
 extern HOST_DRIVER_ENTRY  gHostDriverRegistry[];
 extern EFI_HANDLE                   gFuzzHandle;
 
+//
+// Not exposed by any DpcLib header; declared here so the harness can invoke
+// it directly (see InitializeHarness).
+//
+EFI_STATUS
+EFIAPI
+DpcLibConstructor (
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
+  );
+
 
 
 
@@ -2176,6 +2187,19 @@ InitializeHarness (
   // NOTE: Generic setup (FuzzGetContext, MockEventSetAdvanceContext) is
   // now handled by ToolChainHarnessLib automatically.
   //
+
+  //
+  // DxeDpcLib declares LIBRARY_CLASS = DpcLib|DXE_CORE DXE_DRIVER ... , which
+  // excludes USER_DEFINED.  AutoGen therefore omits DpcLibConstructor from
+  // this module's ProcessLibraryConstructorList, leaving DxeDpcLib's static
+  // mDpc NULL and making QueueDpc() segfault once a retransmission timer
+  // fires.  Run it by hand, after the mock DPC protocol is installed.
+  //
+  Status = DpcLibConstructor (gFuzzHandle, gST);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "TestDhcp6Driver: DpcLibConstructor failed: %r\n", Status));
+    return Status;
+  }
 
   //
   // Dispatch driver via ConnectController (same path as DXE dispatcher).

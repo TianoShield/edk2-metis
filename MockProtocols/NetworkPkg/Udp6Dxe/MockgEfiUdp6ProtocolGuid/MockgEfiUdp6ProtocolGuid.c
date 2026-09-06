@@ -387,14 +387,15 @@ MockUdp6Receive (
   {
     UINT8  LenHint[2] = { 0 };
     ConsumeFuzzBytes (LenHint, sizeof (LenHint), &Consumed);
-    if (Consumed == 0) {
+    if (Consumed < sizeof (LenHint)) {
       //
-      // Fuzz buffer exhausted — arm the token with ABORTED status.
+      // Fuzz buffer exhausted: leave the token pending, as real Udp6 does when
+      // no datagram arrives.  Completing it here with EFI_ABORTED desynchronises
+      // DxeUdpIoLib -- it re-arms from inside its own receive DPC, so the stale
+      // completion arrives after UdpIo->RecvRequest has moved on and trips the
+      // ASSERT at DxeUdpIoLib.c:177.  Only Cancel/Reset may abort a token.
       //
-      DEBUG ((DEBUG_VERBOSE, "MockUdp6: Receive — fuzz exhausted, aborting\n"));
-      Token->Packet.RxData = NULL;
-      Token->Status        = EFI_ABORTED;
-      MockDeferredSchedule (&mDeferredState, Token->Event);
+      DEBUG ((DEBUG_VERBOSE, "MockUdp6: Receive - fuzz exhausted, token left pending\n"));
       return EFI_SUCCESS;
     }
 
@@ -421,6 +422,16 @@ MockUdp6Receive (
   // 3. Fill payload from fuzz data.
   //
   ConsumeFuzzBytes (PayloadBuf, PayloadSize, &Consumed);
+  if (Consumed == 0) {
+    //
+    // Same rule as above: with no payload to deliver, real Udp6 would simply
+    // keep the token pending rather than complete an empty datagram.
+    //
+    DEBUG ((DEBUG_VERBOSE, "MockUdp6: Receive - no payload, token left pending\n"));
+    FreePool (RxData);
+    return EFI_SUCCESS;
+  }
+
   if (Consumed < PayloadSize) {
     PayloadSize = Consumed;
   }
