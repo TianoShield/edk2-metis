@@ -1,7 +1,7 @@
-homepage: "https://github.com/TianoShield/edk2fuzz"
+homepage: "https://github.com/TianoShield/edk2-metis"
 language: c
 primary_contact: "ramanandabalaji@gmail.com"
-main_repo: "https://github.com/TianoShield/edk2fuzz"
+main_repo: "https://github.com/TianoShield/edk2-metis"
 file_github_issue: true
 fuzzing_engines:
   - afl

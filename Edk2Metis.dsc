@@ -1,5 +1,5 @@
-## @file Edk2Fuzz.dsc
-#  Edk2Fuzz Platform Description — minimal Dhcp6 fuzz harness build.
+## @file Edk2Metis.dsc
+#  Edk2Metis Platform Description — minimal Dhcp6 fuzz harness build.
 #
 #  Layout:
 #    MockProtocols/       Shared mock protocol implementations
@@ -8,26 +8,26 @@
 #    Infrastructure/      ToolChainHarnessLib (AFL fork-server entry point)
 #
 #  Usage:
-#    build -p Edk2Fuzz.dsc -m FuzzHarness/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/TestDhcp6Driver.inf -a X64 -t GCC5
-#    build -p Edk2Fuzz.dsc -m FuzzHarness/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/TestDhcp6Driver.inf -a X64 -t AFL
-#    build -p Edk2Fuzz.dsc -m FuzzHarness/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/TestDhcp6Driver.inf -a X64 -t AFLCLANG -D EDK2_ROOT=/src/edk2
+#    build -p Edk2Metis.dsc -m FuzzHarness/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/TestDhcp6Driver.inf -a X64 -t GCC5
+#    build -p Edk2Metis.dsc -m FuzzHarness/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/TestDhcp6Driver.inf -a X64 -t AFL
+#    build -p Edk2Metis.dsc -m FuzzHarness/NetworkPkg/Dhcp6Dxe/TestDhcp6Driver/TestDhcp6Driver.inf -a X64 -t AFLCLANG -D EDK2_ROOT=/src/edk2
 #
 #  Derived from TianoFuzz (layout) and HBFAplus (sources).
 #
-#  Copyright (c) 2024-2026, Edk2Fuzz Contributors. All rights reserved.
+#  Copyright (c) 2024-2026, Edk2Metis Contributors. All rights reserved.
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
 [Defines]
-  PLATFORM_NAME                  = Edk2FuzzPkg
+  PLATFORM_NAME                  = Edk2MetisPkg
   PLATFORM_GUID                  = 6B0D1C2E-4A83-4F19-9C5D-7E2F84B1A036
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x00010005
-  OUTPUT_DIRECTORY               = Build/Edk2FuzzPkg
+  OUTPUT_DIRECTORY               = Build/Edk2MetisPkg
   SUPPORTED_ARCHITECTURES        = IA32|X64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
-  DEFINE EDK2FUZZ_PATCH_DXE_CONSTRUCTORS = TRUE
+  DEFINE EDK2METIS_PATCH_DXE_CONSTRUCTORS = TRUE
   # OSS-Fuzz overrides with -D EDK2_ROOT=/src/edk2.
   DEFINE EDK2_ROOT = $(WORKSPACE)/edk2
 
@@ -135,4 +135,4 @@
 [BuildOptions]
   GCC:*_*_*_CC_FLAGS = -Wall -Wno-unused-but-set-variable
 
-!include Conf/Edk2FuzzBuildOption.dsc
+!include Conf/Edk2MetisBuildOption.dsc

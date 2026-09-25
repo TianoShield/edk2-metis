@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# Copyright 2026 Edk2Fuzz Contributors. All rights reserved.
+# Copyright 2026 Edk2Metis Contributors. All rights reserved.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-# OSS-Fuzz build script for Edk2Fuzz.
+# OSS-Fuzz build script for Edk2Metis.
 set -eux
 
-REPO_DIR="$SRC/edk2fuzz"
+REPO_DIR="$SRC/edk2-metis"
 EDK2_DIR="$SRC/edk2"
 
 
 make -j"$(nproc)" -C "$EDK2_DIR/BaseTools"
 
 # Lowercase required
-ln -sfn "$REPO_DIR" "$SRC/Edk2Fuzz"
+ln -sfn "$REPO_DIR" "$SRC/Edk2Metis"
 
 export WORKSPACE="$REPO_DIR"
 export EDK_TOOLS_PATH="$EDK2_DIR/BaseTools"
@@ -34,14 +34,14 @@ build_target() {
 
     cd "$REPO_DIR"
     build \
-        -p Edk2Fuzz.dsc \
+        -p Edk2Metis.dsc \
         -m "$inf" \
         -a X64 \
         -t AFLCLANG \
         -b DEBUG \
         -D EDK2_ROOT="$EDK2_DIR"
 
-    cp "$REPO_DIR/Build/Edk2FuzzPkg/DEBUG_AFLCLANG/X64/$harness" "$OUT/$out_name"
+    cp "$REPO_DIR/Build/Edk2MetisPkg/DEBUG_AFLCLANG/X64/$harness" "$OUT/$out_name"
 
     if [ -d "$seed_dir" ]; then
         (cd "$seed_dir" && zip -r "$OUT/${out_name}_seed_corpus.zip" .)

@@ -26,7 +26,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   NetworkPkg/NetworkPkg.dec
-  Edk2Fuzz/Edk2Fuzz.dec
+  Edk2Metis/Edk2Metis.dec
 
 [LibraryClasses]
   FuzzContextLib

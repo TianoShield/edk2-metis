@@ -27,7 +27,7 @@
   MdeModulePkg/MdeModulePkg.dec
   SecurityPkg/SecurityPkg.dec
   CryptoPkg/CryptoPkg.dec
-  Edk2Fuzz/Edk2Fuzz.dec
+  Edk2Metis/Edk2Metis.dec
 
 [LibraryClasses]
   BaseLib

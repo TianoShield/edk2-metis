@@ -1,4 +1,4 @@
-# Dockerfile — Ubuntu 22.04 image ready to build EDK2 + Edk2Fuzz with dynamic UID/GID
+# Dockerfile — Ubuntu 22.04 image ready to build EDK2 + Edk2Metis with dynamic UID/GID
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -57,7 +57,7 @@ chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} 2>/dev/null || true
 chmod 1777 /tmp 2>/dev/null || true
 
 # Restore .claude / .github symlinks into the .private/ submodule
-REPO_DIR=/home/${USERNAME}/edk2fuzz_workspace/Edk2Fuzz
+REPO_DIR=/home/${USERNAME}/edk2-metis_workspace/Edk2Metis
 if [ -d "${REPO_DIR}/.git" ] || [ -f "${REPO_DIR}/.git" ]; then
     if [ -e "${REPO_DIR}/.private/.claude" ] && [ ! -e "${REPO_DIR}/.claude" ]; then
         gosu ${USERNAME} ln -sfn .private/.claude "${REPO_DIR}/.claude" 2>/dev/null || true
@@ -71,24 +71,24 @@ exec gosu ${USERNAME} "$@"
 ENTRYPOINT_EOF
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Env: workspace = parent dir containing both `Edk2Fuzz/` (the repo) and resolves
-# `Edk2Fuzz/Edk2Fuzz.dec` via PACKAGES_PATH.  Inside `Edk2Fuzz/` are the
+# Env: workspace = parent dir containing both `Edk2Metis/` (the repo) and resolves
+# `Edk2Metis/Edk2Metis.dec` via PACKAGES_PATH.  Inside `Edk2Metis/` are the
 # `edk2/` and `AFLplusplus/` submodules.
 ENV USERNAME=${USERNAME}
 ENV HOME=/home/${USERNAME}
-ENV WORKSPACE_PARENT=/home/${USERNAME}/edk2fuzz_workspace
-ENV WORKSPACE=${WORKSPACE_PARENT}/Edk2Fuzz
+ENV WORKSPACE_PARENT=/home/${USERNAME}/edk2-metis_workspace
+ENV WORKSPACE=${WORKSPACE_PARENT}/Edk2Metis
 ENV AFL_PATH=${WORKSPACE}/AFLplusplus
 ENV EDK2_PATH=${WORKSPACE}/edk2
 ENV PATH="${AFL_PATH}:${PATH}"
 
-# Convenience init script — source to populate edk2 + AFL++ + edk2fuzz env
+# Convenience init script — source to populate edk2 + AFL++ + edk2-metis env
 RUN mkdir -p ${WORKSPACE} \
- && cat > ${HOME}/init_edk2fuzz_env.sh <<'EOF'
+ && cat > ${HOME}/init_edk2-metis_env.sh <<'EOF'
 #!/usr/bin/env bash
-# Source this script to set up env for building EDK2 + Edk2Fuzz in this container.
-export WORKSPACE_PARENT="$HOME/edk2fuzz_workspace"
-export WORKSPACE="$WORKSPACE_PARENT/Edk2Fuzz"
+# Source this script to set up env for building EDK2 + Edk2Metis in this container.
+export WORKSPACE_PARENT="$HOME/edk2-metis_workspace"
+export WORKSPACE="$WORKSPACE_PARENT/Edk2Metis"
 export EDK2_PATH="$WORKSPACE/edk2"
 export AFL_PATH="$WORKSPACE/AFLplusplus"
 export PACKAGES_PATH="$EDK2_PATH:$WORKSPACE_PARENT"
@@ -98,7 +98,7 @@ export CLANG_PATH="/usr/bin"
 export ASAN_SYMBOLIZER_PATH="$CLANG_PATH/llvm-symbolizer"
 
 echo "============================================"
-echo "Edk2Fuzz Environment Setup"
+echo "Edk2Metis Environment Setup"
 echo "  WORKSPACE       = $WORKSPACE"
 echo "  PACKAGES_PATH   = $PACKAGES_PATH"
 echo "  EDK2_PATH       = $EDK2_PATH"
@@ -124,7 +124,7 @@ if [ -f "$EDK2_PATH/edksetup.sh" ]; then
     popd >/dev/null
 fi
 
-# Install Edk2Fuzz Conf overrides (tools_def.txt etc.) into edk2/Conf
+# Install Edk2Metis Conf overrides (tools_def.txt etc.) into edk2/Conf
 if [ -f "$WORKSPACE/Conf/build_rule.txt" ]; then
     cp -f "$WORKSPACE/Conf/build_rule.txt"  "$EDK2_PATH/Conf/build_rule.txt"
     cp -f "$WORKSPACE/Conf/tools_def.txt"   "$EDK2_PATH/Conf/tools_def.txt"
@@ -134,11 +134,11 @@ fi
 export AFL_USE_ASAN=1
 export ASAN_OPTIONS=abort_on_error=1:detect_leaks=0:symbolize=0:allocator_may_return_null=1:detect_odr_violation=0
 
-echo "Edk2Fuzz environment ready."
+echo "Edk2Metis environment ready."
 EOF
-RUN chmod +x ${HOME}/init_edk2fuzz_env.sh \
+RUN chmod +x ${HOME}/init_edk2-metis_env.sh \
  && chown -R ${USERNAME}:${USERNAME} ${HOME}
 
-WORKDIR /home/${USERNAME}/edk2fuzz_workspace/Edk2Fuzz
+WORKDIR /home/${USERNAME}/edk2-metis_workspace/Edk2Metis
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["bash", "-l"]

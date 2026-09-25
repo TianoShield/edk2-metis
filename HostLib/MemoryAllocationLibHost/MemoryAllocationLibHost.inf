@@ -18,7 +18,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  Edk2Fuzz/Edk2Fuzz.dec
+  Edk2Metis/Edk2Metis.dec
 
 [LibraryClasses]
   BaseLib

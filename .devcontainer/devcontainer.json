@@ -1,8 +1,8 @@
 {
-  "name": "EDK2 Edk2Fuzz Development",
+  "name": "EDK2 Edk2Metis Development",
   "dockerComposeFile": "docker-compose.yml",
-  "service": "edk2fuzz-dev",
-  "workspaceFolder": "/home/builder/edk2fuzz_workspace/Edk2Fuzz",
+  "service": "edk2-metis-dev",
+  "workspaceFolder": "/home/builder/edk2-metis_workspace/Edk2Metis",
 
   "initializeCommand": "echo \"HOST_UID=$(id -u)\" > ${localWorkspaceFolder}/.devcontainer/.env && echo \"HOST_GID=$(id -g)\" >> ${localWorkspaceFolder}/.devcontainer/.env",
 
@@ -24,6 +24,6 @@
 
   "remoteUser": "builder",
 
-  "postCreateCommand": "git submodule update --init && git submodule update --init --recursive edk2 AFLplusplus && (test -e .private/.claude && ln -sfn .private/.claude .claude || true) && (test -e .private/.github && ln -sfn .private/.github .github || true) && (grep -q 'init_edk2fuzz_env.sh' ~/.bashrc || echo 'source ~/init_edk2fuzz_env.sh' >> ~/.bashrc)",
-  "postStartCommand": "bash -c 'source ~/init_edk2fuzz_env.sh && echo \"Edk2Fuzz environment initialized.\"'"
+  "postCreateCommand": "git submodule update --init && git submodule update --init --recursive edk2 AFLplusplus && (test -e .private/.claude && ln -sfn .private/.claude .claude || true) && (test -e .private/.github && ln -sfn .private/.github .github || true) && (grep -q 'init_edk2-metis_env.sh' ~/.bashrc || echo 'source ~/init_edk2-metis_env.sh' >> ~/.bashrc)",
+  "postStartCommand": "bash -c 'source ~/init_edk2-metis_env.sh && echo \"Edk2Metis environment initialized.\"'"
 }

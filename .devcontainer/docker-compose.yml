@@ -1,23 +1,23 @@
 version: '3.8'
 
 services:
-  edk2fuzz-dev:
+  edk2-metis-dev:
     build:
       context: ..
       dockerfile: Dockerfile
       args:
         - HOST_UID=${HOST_UID:-1000}
         - HOST_GID=${HOST_GID:-1000}
-    image: edk2fuzz:ubuntu22.04
+    image: edk2-metis:ubuntu22.04
 
     stdin_open: true
     tty: true
 
-    # Mount the repo at /home/builder/edk2fuzz_workspace/Edk2Fuzz so that
-    # PACKAGES_PATH=/home/builder/edk2fuzz_workspace can resolve
-    # Edk2Fuzz/Edk2Fuzz.dec (matches OSS-Fuzz $SRC/edk2fuzz layout).
+    # Mount the repo at /home/builder/edk2-metis_workspace/Edk2Metis so that
+    # PACKAGES_PATH=/home/builder/edk2-metis_workspace can resolve
+    # Edk2Metis/Edk2Metis.dec (matches OSS-Fuzz $SRC/edk2-metis layout).
     volumes:
-      - ..:/home/builder/edk2fuzz_workspace/Edk2Fuzz:cached
+      - ..:/home/builder/edk2-metis_workspace/Edk2Metis:cached
 
     tmpfs:
       - /tmp:exec,size=16G
